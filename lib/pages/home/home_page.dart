@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class MainPage extends StatelessWidget {
-  const MainPage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +147,6 @@ class MainPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            ListView.builder(itemBuilder: (context, inde))
           ],
         ),
       ),
