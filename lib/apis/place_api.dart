@@ -15,7 +15,9 @@ class PlaceApi {
       Dio dio = Dio(options);
 
       var response = await dio.get("https://youtube.anys34.com/list");
-      final body = jsonDecode(response.data);
+      final body = response.data;
+
+      if (body.length == 0) return [];
 
       List<PreviewPlace> list =
           body.map((i) => PreviewPlace.fromJson(i)).toList();

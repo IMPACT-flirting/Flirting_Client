@@ -24,8 +24,11 @@ class _HomePageState extends State<HomePage> {
     String? userId = await storage.read(key: "userId");
     String data = await UserApi().getProfile(userId!);
 
+    List<PreviewPlace> plaecListData = await PlaceApi().getPlaceList();
+
     setState(() {
       userName = data;
+      placeList = plaecListData;
     });
   }
 
