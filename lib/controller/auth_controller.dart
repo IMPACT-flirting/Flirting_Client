@@ -1,7 +1,11 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
-  String? getCurrentUser() {
-    return null;
+  Future<String?> getCurrentUser() async {
+    const storage = FlutterSecureStorage();
+    String? userId = await storage.read(key: "userId");
+
+    return userId;
   }
 }

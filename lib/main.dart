@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var initialRoute = PageRouter.loginRoute;
 
+    // ignore: unnecessary_null_comparison
     if (AuthController().getCurrentUser() != null) {
       initialRoute = PageRouter.homeRoute;
     }

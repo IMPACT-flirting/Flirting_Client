@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flirting/utils/response.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthApi {
   Future<CustomResponse> signIn(String id, String password) async {
@@ -23,10 +24,12 @@ class AuthApi {
         options: Options(contentType: Headers.jsonContentType),
         data: body,
       );
-      debugPrint(response.data.toString());
+
+      const storage = FlutterSecureStorage();
+      await storage.write(key: "userId", value: response.data.toString());
 
       if (response.statusCode != 200) {
-        return CustomResponse(isSuccess: false, message: "회원가입 실패");
+        return CustomResponse(isSuccess: false, message: "로그인 실패");
       }
 
       return CustomResponse(isSuccess: true, message: "로그인 성공");
@@ -70,5 +73,10 @@ class AuthApi {
       debugPrint(e.toString());
       return CustomResponse(isSuccess: false, message: e.toString());
     }
+  }
+
+  void logout() async {
+    const storage = FlutterSecureStorage();
+    await storage.delete(key: "userId");
   }
 }
