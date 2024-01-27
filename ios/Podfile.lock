@@ -49,7 +49,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
+<<<<<<< Updated upstream
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+=======
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+>>>>>>> Stashed changes
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   google_sign_in_ios: 1bfaf6607b44cd1b24c4d4bc39719870440f9ce1
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
@@ -57,6 +61,10 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
 
+<<<<<<< Updated upstream
 PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+=======
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+>>>>>>> Stashed changes
 
 COCOAPODS: 1.14.3
