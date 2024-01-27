@@ -1,5 +1,5 @@
-import 'package:flirting/presentation/login/login_page.dart';
-import 'package:flirting/presentation/login/signUp_page.dart';
+import 'package:flirting/pages/auth/login_page.dart';
+import 'package:flirting/pages/auth/signup_input_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginMainPage extends StatelessWidget {
@@ -29,11 +29,10 @@ class LoginMainPage extends StatelessWidget {
             Center(
               child: GestureDetector(
                 onTap: () {
-                  print("회원가입");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const SignUp(),
+                      builder: (BuildContext context) => SignUpPage(),
                     ),
                   );
                 },
@@ -67,7 +66,7 @@ class LoginMainPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const Login(),
+                      builder: (BuildContext context) => Login(),
                     ),
                   );
                 },
