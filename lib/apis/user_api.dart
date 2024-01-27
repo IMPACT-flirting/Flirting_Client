@@ -9,6 +9,8 @@ class UserApi {
     Dio dio = Dio(options);
 
     var response = await dio.get("https://youtube.anys34.com/profile/$userId");
-    return response.data.toString();
+    // var body = jsonDecode(response.data);
+
+    return response.data['name'];
   }
 }

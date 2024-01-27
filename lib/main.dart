@@ -9,18 +9,29 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  createState() => _AppState();
+}
+
+class _AppState extends State<MyApp> {
+  var initialRoute = PageRouter.joinHomeRoute;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      if (await AuthController().getCurrentUser() != null) {
+        initialRoute = PageRouter.homeRoute;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var initialRoute = PageRouter.loginRoute;
-
-    // ignore: unnecessary_null_comparison
-    if (AuthController().getCurrentUser() != null) {
-      initialRoute = PageRouter.homeRoute;
-    }
-
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
