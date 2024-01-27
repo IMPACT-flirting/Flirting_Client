@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class SignUp extends StatelessWidget {
+  const SignUp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class Login extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Text(
-              '로그인',
+              '회원가입',
               style: TextStyle(
                 color: Color(0xFF4E4E4E),
                 fontSize: 32,
@@ -82,7 +82,36 @@ class Login extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 325,
+              height: 17,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                    color: Color(0xff415EF8),
+                    width: 1,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                    color: Color(0xFFD9D9D9),
+                    width: 1,
+                  ),
+                ),
+                labelText: '비밀번호를 다시 입력해주세요',
+                labelStyle: const TextStyle(
+                  color: Color(0xFF4f4f4f),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 263,
             ),
             Center(
               child: GestureDetector(
@@ -91,7 +120,7 @@ class Login extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const Login(),
+                      builder: (BuildContext context) => const SignUp(),
                     ),
                   );
                 },
@@ -104,7 +133,7 @@ class Login extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: const Text(
-                    "로그인",
+                    "회원가입",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
