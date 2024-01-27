@@ -1,5 +1,7 @@
-import 'package:flirting/presentation/login/login_page.dart';
+import 'package:flirting/controller/auth_controller.dart';
+import 'package:flirting/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,17 +10,24 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    var initialRoute = PageRouter.loginRoute;
+
+    // ignore: unnecessary_null_comparison
+    if (AuthController().getCurrentUser() != null) {
+      initialRoute = PageRouter.homeRoute;
+    }
+
+    return GetMaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      debugShowCheckedModeBanner: false,
-      home: const MainPage(),
+      onGenerateRoute: PageRouter.generatedRoute,
+      initialRoute: initialRoute,
     );
   }
 }

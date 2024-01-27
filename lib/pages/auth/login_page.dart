@@ -1,7 +1,14 @@
+import 'package:flirting/apis/auth_api.dart';
+import 'package:flirting/pages/home/home_page.dart';
+import 'package:flirting/utils/response.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  Login({super.key});
+
+  final _idController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +34,7 @@ class Login extends StatelessWidget {
               height: 27,
             ),
             TextField(
+              controller: _idController,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 border: OutlineInputBorder(
@@ -56,6 +64,7 @@ class Login extends StatelessWidget {
               height: 17,
             ),
             TextField(
+              controller: _passwordController,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 border: OutlineInputBorder(
@@ -86,12 +95,20 @@ class Login extends StatelessWidget {
             ),
             Center(
               child: GestureDetector(
-                onTap: () {
-                  print("회원가입");
+                onTap: () async {
+                  CustomResponse response = await AuthApi()
+                      .signIn(_idController.text, _passwordController.text);
+
+                  if (!context.mounted) return;
+                  if (response.isSuccess == false) {
+                    Get.snackbar("로그인 실패", response.message);
+                    return;
+                  }
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const Login(),
+                      builder: (BuildContext context) => const HomePage(),
                     ),
                   );
                 },
