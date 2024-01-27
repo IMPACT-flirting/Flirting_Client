@@ -1,4 +1,3 @@
-import 'package:flirting/apis/auth_api.dart';
 import 'package:flirting/apis/place_api.dart';
 import 'package:flirting/apis/user_api.dart';
 import 'package:flirting/controller/home_controller.dart';
@@ -42,13 +41,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                onTap: () {
-                  AuthApi().logout();
-                  Navigator.pushNamed(context, "join_home");
-                },
-                child: const Text("로그아웃"),
-              ),
               const SizedBox(
                 height: 30,
               ),
