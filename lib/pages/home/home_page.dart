@@ -19,15 +19,21 @@ class _HomePageState extends State<HomePage> {
   List<PreviewPlace> placeList = [];
   String userName = "undefined";
 
+  _loadData() async {
+    const storage = FlutterSecureStorage();
+    String? userId = await storage.read(key: "userId");
+    String data = await UserApi().getProfile(userId!);
+
+    setState(() {
+      userName = data;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async {
-      const storage = FlutterSecureStorage();
-      String? userId = await storage.read(key: "userId");
-
-      placeList = await PlaceApi().getPlaceList();
-      userName = await UserApi().getProfile(userId!);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadData();
     });
   }
 
