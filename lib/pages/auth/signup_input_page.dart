@@ -1,9 +1,10 @@
 import 'package:flirting/apis/auth_api.dart';
+import 'package:flirting/utils/auth_animation.dart';
 import 'package:flirting/utils/response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends GetView<AuthAnimation> {
   SignUpPage({super.key});
 
   final _idController = TextEditingController();
@@ -12,6 +13,7 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(AuthAnimation());
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -33,30 +35,32 @@ class SignUpPage extends StatelessWidget {
             const SizedBox(
               height: 27,
             ),
-            TextField(
-              controller: _idController,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                    color: Color(0xff415EF8),
-                    width: 1,
+            Opacity(
+              child: TextField(
+                controller: _idController,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                    color: Color(0xFFD9D9D9),
-                    width: 1,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                      color: Color(0xff415EF8),
+                      width: 1,
+                    ),
                   ),
-                ),
-                labelText: '아이디를 입력해주세요',
-                labelStyle: const TextStyle(
-                  color: Color(0xFF4f4f4f),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                      color: Color(0xFFD9D9D9),
+                      width: 1,
+                    ),
+                  ),
+                  labelText: '아이디를 입력해주세요',
+                  labelStyle: const TextStyle(
+                    color: Color(0xFF4f4f4f),
+                  ),
                 ),
               ),
             ),

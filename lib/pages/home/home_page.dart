@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
               InkWell(
                 onTap: () {
                   AuthApi().logout();
-                  Navigator.pushNamed(context, "join");
+                  Navigator.pushNamed(context, "join_home");
                 },
                 child: const Text("로그아웃"),
               ),

@@ -3,8 +3,8 @@ import 'package:flirting/utils/response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Login extends StatelessWidget {
-  Login({super.key});
+class LoginPage extends StatelessWidget {
+  LoginPage({super.key});
 
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
