@@ -1,7 +1,9 @@
-import 'package:flirting/presentation/login/login_page.dart';
+import 'package:flirting/presentation/main/main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+Future<void> main() async {
+  await initializeDateFormatting();
   runApp(const MyApp());
 }
 
@@ -12,10 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: "Pretendard",
       ),
       debugShowCheckedModeBanner: false,
       home: const MainPage(),
