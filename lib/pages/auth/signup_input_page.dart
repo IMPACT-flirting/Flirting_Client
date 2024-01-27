@@ -1,5 +1,4 @@
 import 'package:flirting/apis/auth_api.dart';
-import 'package:flirting/pages/auth/login_page.dart';
 import 'package:flirting/utils/response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -138,12 +137,7 @@ class SignUpPage extends StatelessWidget {
                     return;
                   }
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => Login(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, "login");
                 },
                 child: Container(
                   width: 342,

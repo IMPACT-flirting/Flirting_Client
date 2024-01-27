@@ -1,5 +1,5 @@
-import 'package:flirting/presentation/main/widget/main_select_date_bottom_sheet.dart';
-import 'package:flirting/presentation/main/widget/main_select_timeline_bottom_sheet.dart';
+import 'package:flirting/widget/main_select_date_bottom_sheet.dart';
+import 'package:flirting/widget/main_select_timeline_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class MainSelectMenuBottomSheet extends StatelessWidget {

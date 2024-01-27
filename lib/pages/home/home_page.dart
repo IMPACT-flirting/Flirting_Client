@@ -1,7 +1,9 @@
+import 'package:flirting/apis/auth_api.dart';
 import 'package:flirting/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flirting/widget/main_select_menu_bottom_sheet.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,6 +18,13 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              InkWell(
+                onTap: () {
+                  AuthApi().logout();
+                  Navigator.pushNamed(context, "join");
+                },
+                child: const Text("로그아웃"),
+              ),
               const SizedBox(
                 height: 30,
               ),
@@ -157,19 +166,61 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 35),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40),
-                child: Text(
-                  '추천 장소',
-                  style: TextStyle(
-                    color: Color(0xFF4F4F4F),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
+              const Text(
+                '추천 장소',
+                style: TextStyle(
+                  color: Color(0xFF4F4F4F),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
                 ),
               ),
               const SizedBox(height: 20),
+              for (var i = 0; i < 10; i++)
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 130,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFD9D9D9),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 11),
+                  ],
+                ),
             ],
+          ),
+        ),
+        floatingActionButton: GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return const MainSelectMenuBottomSheet();
+              },
+            );
+          },
+          child: Container(
+            width: 96,
+            height: 96,
+            decoration: BoxDecoration(
+              color: const Color(0xFF415EF8),
+              borderRadius: BorderRadius.circular(44),
+              border: Border.all(
+                width: 6,
+                color: Colors.white,
+              ),
+            ),
+            child: const Icon(
+              Icons.edit_outlined,
+              color: Colors.white,
+              size: 48,
+            ),
           ),
         ),
       ),

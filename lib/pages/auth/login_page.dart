@@ -1,5 +1,4 @@
 import 'package:flirting/apis/auth_api.dart';
-import 'package:flirting/pages/home/home_page.dart';
 import 'package:flirting/utils/response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -105,12 +104,7 @@ class Login extends StatelessWidget {
                     return;
                   }
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => const HomePage(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, "home");
                 },
                 child: Container(
                   width: 342,

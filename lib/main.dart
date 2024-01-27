@@ -2,6 +2,7 @@ import 'package:flirting/controller/auth_controller.dart';
 import 'package:flirting/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   await initializeDateFormatting();
