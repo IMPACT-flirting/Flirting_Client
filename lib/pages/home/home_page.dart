@@ -1,4 +1,6 @@
+import 'package:flirting/controller/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatelessWidget {
@@ -6,12 +8,17 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(HomeController());
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(
+                height: 30,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 34),
                 child: Row(
@@ -46,14 +53,26 @@ class HomePage extends StatelessWidget {
                 child: SizedBox(
                   height: 400,
                   width: MediaQuery.of(context).size.width,
-                  child: TableCalendar(
-                    headerStyle: const HeaderStyle(
-                      formatButtonVisible: false,
-                    ),
-                    focusedDay: DateTime.now(),
-                    firstDay: DateTime.utc(2023, 1, 1),
-                    lastDay: DateTime.utc(2025, 1, 1),
-                  ),
+                  child: GetBuilder<HomeController>(builder: (controller) {
+                    return TableCalendar(
+                      headerStyle: const HeaderStyle(
+                        formatButtonVisible: false,
+                      ),
+                      onDaySelected: (selectedDay, focusedDay) async {
+                        controller.updateFocusedDay(focusedDay);
+                        controller.updateSelectedDay(selectedDay);
+                      },
+                      onPageChanged: (focusedDay) {
+                        controller.updateFocusedDay(focusedDay);
+                      },
+                      focusedDay: controller.focusedDay,
+                      firstDay: DateTime.utc(2023, 1, 1),
+                      lastDay: DateTime.utc(2025, 1, 1),
+                      selectedDayPredicate: (day) {
+                        return isSameDay(controller.selectedDay, day);
+                      },
+                    );
+                  }),
                 ),
               ),
               const SizedBox(height: 42),
