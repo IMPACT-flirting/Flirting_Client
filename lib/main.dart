@@ -1,4 +1,4 @@
-import 'package:flirting/mainpage.dart';
+import 'package:flirting/presentation/login/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
