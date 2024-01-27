@@ -8,6 +8,7 @@ class SignUpPage extends GetView<AuthAnimation> {
   SignUpPage({super.key});
 
   final _idController = TextEditingController();
+  final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
 
@@ -35,32 +36,60 @@ class SignUpPage extends GetView<AuthAnimation> {
             const SizedBox(
               height: 27,
             ),
-            Opacity(
-              child: TextField(
-                controller: _idController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+            TextField(
+              controller: _idController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                    color: Color(0xff415EF8),
+                    width: 1,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: Color(0xff415EF8),
-                      width: 1,
-                    ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                    color: Color(0xFFD9D9D9),
+                    width: 1,
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: Color(0xFFD9D9D9),
-                      width: 1,
-                    ),
+                ),
+                labelText: '아이디를 입력해주세요',
+                labelStyle: const TextStyle(
+                  color: Color(0xFF4f4f4f),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 17,
+            ),
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                    color: Color(0xff415EF8),
+                    width: 1,
                   ),
-                  labelText: '아이디를 입력해주세요',
-                  labelStyle: const TextStyle(
-                    color: Color(0xFF4f4f4f),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                    color: Color(0xFFD9D9D9),
+                    width: 1,
                   ),
+                ),
+                labelText: '이름을 입력해주세요',
+                labelStyle: const TextStyle(
+                  color: Color(0xFF4f4f4f),
                 ),
               ),
             ),
@@ -133,7 +162,8 @@ class SignUpPage extends GetView<AuthAnimation> {
                   CustomResponse response = await AuthApi().signUp(
                       _idController.text,
                       _passwordController.text,
-                      _passwordConfirmController.text);
+                      _passwordConfirmController.text,
+                      _nameController.text);
 
                   if (!context.mounted) return;
                   if (response.isSuccess == false) {
@@ -163,7 +193,7 @@ class SignUpPage extends GetView<AuthAnimation> {
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

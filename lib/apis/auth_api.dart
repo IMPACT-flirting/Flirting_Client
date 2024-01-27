@@ -40,7 +40,7 @@ class AuthApi {
   }
 
   Future<CustomResponse> signUp(
-      String id, String password, String confirmPassword) async {
+      String id, String password, String confirmPassword, String name) async {
     try {
       // 비밀번호 확인
       if (password.compareTo(confirmPassword) != 0) {
@@ -55,6 +55,7 @@ class AuthApi {
 
       var body = json.encode({
         'userId': id,
+        'name': name,
         'password': password,
       });
 

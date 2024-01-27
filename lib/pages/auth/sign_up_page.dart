@@ -1,4 +1,3 @@
-import 'package:flirting/pages/auth/signup_input_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginMainPage extends StatelessWidget {
@@ -28,12 +27,7 @@ class LoginMainPage extends StatelessWidget {
             Center(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => SignUpPage(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, "join");
                 },
                 child: Container(
                   width: 342,

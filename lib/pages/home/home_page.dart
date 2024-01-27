@@ -1,12 +1,36 @@
 import 'package:flirting/apis/auth_api.dart';
+import 'package:flirting/apis/place_api.dart';
+import 'package:flirting/apis/user_api.dart';
 import 'package:flirting/controller/home_controller.dart';
+import 'package:flirting/models/place.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flirting/widget/main_select_menu_bottom_sheet.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<PreviewPlace> placeList = [];
+  String userName = "undefined";
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      const storage = FlutterSecureStorage();
+      String? userId = await storage.read(key: "userId");
+
+      placeList = await PlaceApi().getPlaceList();
+      userName = await UserApi().getProfile(userId!);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +57,9 @@ class HomePage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "김수민 님",
-                      style: TextStyle(
+                    Text(
+                      "$userName 님",
+                      style: const TextStyle(
                         color: Color(0xFF4F4F4F),
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
@@ -175,24 +199,29 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              for (var i = 0; i < 10; i++)
-                Column(
-                  children: [
-                    Row(
+              ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: placeList.length,
+                  itemBuilder: (context, index) {
+                    return Column(
                       children: [
-                        Container(
-                          width: 130,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFD9D9D9),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                        Row(
+                          children: [
+                            Container(
+                              width: 130,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFD9D9D9),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 11),
                       ],
-                    ),
-                    const SizedBox(height: 11),
-                  ],
-                ),
+                    );
+                  }),
             ],
           ),
         ),
