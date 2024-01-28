@@ -27,7 +27,7 @@ class PageRouter {
       case joinHomeRoute:
         return MaterialPageRoute(builder: (_) => const LoginMainPage());
       case timelineRoute:
-        return MaterialPageRoute(builder: (_) => const TimelinePage());
+        return MaterialPageRoute(builder: (_) => TimelinePage());
       case writeRoute:
         return MaterialPageRoute(builder: (_) => const WritePage());
       case postRoute:

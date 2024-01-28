@@ -13,7 +13,7 @@ class MainPostingPage extends StatefulWidget {
 
 class _PostPageState extends State<MainPostingPage> {
   late Place place;
-  late List<Comment> comments;
+  List<Comment> comments = [];
 
   _asyncMethod() async {
     final args = ModalRoute.of(context)!.settings.arguments as PostArgument;
