@@ -3,24 +3,35 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flirting/models/comment.dart';
 import 'package:flirting/models/place.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class PlaceApi {
+  Future<Place> getPlace(int placeId) async {
+    try {
+      var response =
+          await http.get(Uri.parse("https://youtube.anys34.com/list/$placeId"));
+      final body = jsonDecode(response.body);
+      debugPrint(body.toString());
+
+      return Place.fromJson(body);
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
   Future<List<PreviewPlace>> getPlaceList() async {
     try {
-      var options = BaseOptions(
-        connectTimeout: const Duration(seconds: 5), //5s
-        receiveTimeout: const Duration(seconds: 3), //15s
-      );
-      Dio dio = Dio(options);
-
-      var response = await dio.get("https://youtube.anys34.com/list");
-      final body = response.data;
+      var response =
+          await http.get(Uri.parse("https://youtube.anys34.com/list"));
+      final body = jsonDecode(response.body);
 
       if (body.length == 0) return [];
+      body.removeAt(0); // 빈 데이터가 들어감
 
       List<PreviewPlace> list =
-          body.map((i) => PreviewPlace.fromJson(i)).toList();
+          body.map<PreviewPlace>((i) => PreviewPlace.fromJson(i)).toList();
       return list;
     } catch (e) {
       throw e.toString();
@@ -96,18 +107,15 @@ class PlaceApi {
     }
   }
 
-  Future<Comment> getComment(String commentId) async {
+  Future<List<Comment>> getComment(int postId) async {
     try {
-      var options = BaseOptions(
-        connectTimeout: const Duration(seconds: 5), //5s
-        receiveTimeout: const Duration(seconds: 3), //15s
-      );
-      Dio dio = Dio(options);
+      var response = await http
+          .get(Uri.parse("https://youtube.anys34.com/comment/$postId"));
+      final body = jsonDecode(response.body);
 
-      var response =
-          await dio.get("https://youtube.anys34.com/comment/$commentId");
-
-      return Comment.fromJson(jsonDecode(response.data));
+      List<Comment> list =
+          body.map<Comment>((i) => Comment.fromJson(i)).toList();
+      return list;
     } catch (e) {
       throw e.toString();
     }

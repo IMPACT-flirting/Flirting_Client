@@ -1,5 +1,5 @@
-import 'package:flirting/widget/main_select_date_bottom_sheet.dart';
-import 'package:flirting/widget/main_select_timeline_bottom_sheet.dart';
+// import 'package:flirting/widget/main_select_date_bottom_sheet.dart';
+// import 'package:flirting/widget/main_select_timeline_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class MainSelectMenuBottomSheet extends StatelessWidget {
@@ -28,13 +28,14 @@ class MainSelectMenuBottomSheet extends StatelessWidget {
           const SizedBox(height: 24),
           GestureDetector(
             onTap: () {
-              Navigator.pop(context); // bottomSheet 닫음
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return const MainSelectTimelineBottomSheet();
-                },
-              );
+              // Navigator.pop(context); // bottomSheet 닫음
+              // showModalBottomSheet(
+              //   context: context,
+              //   builder: (context) {
+              //     return const MainSelectTimelineBottomSheet();
+              //   },
+              // );
+              Navigator.pushNamed(context, "plan");
             },
             child: Container(
               width: MediaQuery.of(context).size.width - 50,
@@ -66,13 +67,14 @@ class MainSelectMenuBottomSheet extends StatelessWidget {
           const SizedBox(height: 10),
           GestureDetector(
             onTap: () {
-              Navigator.pop(context); // bottomSheet 닫음
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return const MainSelectDateBottomSheet();
-                },
-              );
+              // Navigator.pop(context); // bottomSheet 닫음
+              // showModalBottomSheet(
+              //   context: context,
+              //   builder: (context) {
+              //     return const MainSelectDateBottomSheet();
+              //   },
+              // );
+              Navigator.pushNamed(context, "timeline");
             },
             child: Container(
               width: MediaQuery.of(context).size.width - 50,

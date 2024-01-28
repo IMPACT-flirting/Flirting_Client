@@ -1,8 +1,39 @@
-import 'package:flirting/widget/main_select_date_bottom_sheet.dart';
+import 'package:flirting/apis/place_api.dart';
+import 'package:flirting/models/comment.dart';
+import 'package:flirting/models/place.dart';
+import 'package:flirting/utils/arguments.dart';
 import 'package:flutter/material.dart';
 
-class MainPostingPage extends StatelessWidget {
+class MainPostingPage extends StatefulWidget {
   const MainPostingPage({super.key});
+
+  @override
+  createState() => _PostPageState();
+}
+
+class _PostPageState extends State<MainPostingPage> {
+  late Place place;
+  late List<Comment> comments;
+
+  _asyncMethod() async {
+    final args = ModalRoute.of(context)!.settings.arguments as PostArgument;
+    var data = await PlaceApi().getPlace(args.index);
+    var commentData = await PlaceApi().getComment(args.index);
+
+    setState(() {
+      place = data;
+      comments = commentData;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +59,9 @@ class MainPostingPage extends StatelessWidget {
                       const SizedBox(
                         height: 16,
                       ),
-                      const Text(
-                        '장소의제목은몇글자까지',
-                        style: TextStyle(
+                      Text(
+                        place.title,
+                        style: const TextStyle(
                           color: Color(0xFF4E4E4E),
                           fontSize: 24,
                           fontFamily: 'Pretendard',
@@ -41,75 +72,12 @@ class MainPostingPage extends StatelessWidget {
                       const SizedBox(
                         height: 8,
                       ),
-                      Row(
-                        children: [
-                          const Text(
-                            '4.0',
-                            style: TextStyle(
-                              color: Color(0xFF878A8E),
-                              fontSize: 14,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w400,
-                              height: 0.09,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          for (int i = 0; i < 4; i++)
-                            Container(
-                              width: 14,
-                              height: 14,
-                              decoration: const ShapeDecoration(
-                                color: Color(0xffF6BA46),
-                                shape: StarBorder(
-                                  points: 5,
-                                  innerRadiusRatio: 0.46,
-                                  pointRounding: 0.40,
-                                  valleyRounding: 0,
-                                  rotation: 0,
-                                  squash: 0,
-                                ),
-                              ),
-                            ),
-                          Container(
-                            width: 14,
-                            height: 14,
-                            decoration: const ShapeDecoration(
-                              color: Color(0xFFc9cbcd),
-                              shape: StarBorder(
-                                points: 5,
-                                innerRadiusRatio: 0.46,
-                                pointRounding: 0.40,
-                                valleyRounding: 0,
-                                rotation: 0,
-                                squash: 0,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          const Text(
-                            '(3,450)',
-                            style: TextStyle(
-                              color: Color(0xFF878A8E),
-                              fontSize: 14,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w400,
-                              height: 0.09,
-                              letterSpacing: -0.32,
-                            ),
-                          )
-                        ],
-                      ),
                       const SizedBox(
                         height: 4,
                       ),
-                      const Text(
-                        '여기는 주소인데  - 주소는몇글자까지가능?',
-                        style: TextStyle(
+                      Text(
+                        place.address,
+                        style: const TextStyle(
                           color: Color(0xFF878A8E),
                           fontSize: 14,
                           fontFamily: 'Pretendard',
@@ -135,10 +103,10 @@ class MainPostingPage extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8)),
                               ),
-                              child: const Text(
-                                '#해시태그',
+                              child: Text(
+                                place.hashtags[i],
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,
                                   fontFamily: 'Pretendard',
@@ -158,9 +126,8 @@ class MainPostingPage extends StatelessWidget {
                           width: 363,
                           height: 211,
                           decoration: ShapeDecoration(
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                  "https://via.placeholder.com/363x211"),
+                            image: DecorationImage(
+                              image: NetworkImage(place.imageUrl),
                               fit: BoxFit.cover,
                             ),
                             shape: RoundedRectangleBorder(
@@ -174,9 +141,9 @@ class MainPostingPage extends StatelessWidget {
                       const SizedBox(
                         height: 25,
                       ),
-                      const Text(
-                        '여기는 무엇을 할 수 있는 장소이며\n올 때 마실것좀 사오라 해야겠네요 목말라서 하지만 내용을\n적어야 하니까 뭐라도 쓰긴 하겠습니다.\n이 프로젝트 이대로 괜찮은걸까요?\n아니, 만들 수는 있을까요? (플러팅. 이대로. 괜찮은가..)',
-                        style: TextStyle(
+                      Text(
+                        place.contents,
+                        style: const TextStyle(
                           color: Color(0xFF4E4E4E),
                           fontSize: 14,
                           fontFamily: 'Pretendard',
@@ -229,12 +196,13 @@ class MainPostingPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                const Column(
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '장소의제목은몇글자까지',
-                                      style: TextStyle(
+                                      place.title,
+                                      style: const TextStyle(
+                                        overflow: TextOverflow.ellipsis,
                                         color: Color(0xFF4E4E4E),
                                         fontSize: 12,
                                         fontFamily: 'Pretendard',
@@ -242,7 +210,7 @@ class MainPostingPage extends StatelessWidget {
                                         letterSpacing: -0.32,
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       '4개월 전',
                                       style: TextStyle(
                                         color: Color(0xFF888B8E),
@@ -259,42 +227,31 @@ class MainPostingPage extends StatelessWidget {
                             const SizedBox(
                               height: 9,
                             ),
-                            Row(
-                              children: [
-                                for (int i = 0; i < 5; i++)
-                                  Container(
-                                    width: 14,
-                                    height: 14,
-                                    decoration: const ShapeDecoration(
-                                      color: Color(0xFFF5B945),
-                                      shape: StarBorder(
-                                        points: 5,
-                                        innerRadiusRatio: 0.46,
-                                        pointRounding: 0.40,
-                                        valleyRounding: 0,
-                                        rotation: 0,
-                                        squash: 0,
+                            SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                child: ListView.builder(
+                                  itemCount: comments.length,
+                                  itemBuilder: (context, index) => Row(
+                                    children: [
+                                      const SizedBox(
+                                        height: 13,
                                       ),
-                                    ),
+                                      Text(
+                                        comments[i].text,
+                                        style: const TextStyle(
+                                          color: Color(0xFF4E4E4E),
+                                          fontSize: 14,
+                                          fontFamily: 'Pretendard',
+                                          fontWeight: FontWeight.w400,
+                                          letterSpacing: -0.32,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 36,
+                                      ),
+                                    ],
                                   ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 13,
-                            ),
-                            const Text(
-                              '저희가 편의점을 갔는데 닫혀있었어요. 여기 너무 좋습니다 편의점도 없고 너무 좋아요!!!',
-                              style: TextStyle(
-                                color: Color(0xFF4E4E4E),
-                                fontSize: 14,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: -0.32,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 36,
-                            ),
+                                ))
                           ],
                         ),
                       ),
@@ -329,12 +286,13 @@ class MainPostingPage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return const MainSelectDateBottomSheet();
-                    },
-                  );
+                  // showModalBottomSheet(
+                  //   context: context,
+                  //   builder: (context) {
+                  //     return const MainSelectDateBottomSheet();
+                  //   },
+                  // );
+                  Navigator.pushNamed(context, "timeline");
                 },
                 child: Container(
                   alignment: Alignment.center,

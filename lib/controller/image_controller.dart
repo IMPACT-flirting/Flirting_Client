@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 class ImageController extends GetxController {
   XFile? _image;
 
-  XFile get image => _image!;
+  XFile? get image => _image;
 
   void updateImage(XFile image) {
     _image = image;
