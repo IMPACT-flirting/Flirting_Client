@@ -29,9 +29,10 @@ class PageRouter {
       case timelineRoute:
         return MaterialPageRoute(builder: (_) => const TimelinePage());
       case writeRoute:
-        return MaterialPageRoute(builder: (_) => WritePage());
+        return MaterialPageRoute(builder: (_) => const WritePage());
       case postRoute:
-        return MaterialPageRoute(builder: (_) => const MainPostingPage());
+        return MaterialPageRoute(
+            builder: (_) => const MainPostingPage(), settings: settings);
     }
 
     return MaterialPageRoute(builder: (_) => const HomePage());

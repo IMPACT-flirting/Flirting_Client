@@ -67,7 +67,7 @@ class _WritePageState extends State<WritePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 26.0),
               child: TextField(
-                controller: _addressController,
+                controller: _titleController,
                 style: const TextStyle(
                   fontSize: 15,
                   fontFamily: "Pretendard",
@@ -111,7 +111,7 @@ class _WritePageState extends State<WritePage> {
                         side: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
                       ),
                     ),
-                    child: controller.image.isBlank!
+                    child: controller.image == null
                         ? const Icon(
                             Icons.add,
                             size: 48,
@@ -121,7 +121,7 @@ class _WritePageState extends State<WritePage> {
                             width: 409,
                             height: 225,
                             child: Image.file(
-                              File(controller.image.path),
+                              File(controller.image!.path),
                               fit: BoxFit.cover,
                             )),
                   ));
@@ -317,11 +317,15 @@ class _WritePageState extends State<WritePage> {
                         _addressController.text,
                         hashtags);
                     await PlaceApi()
-                        .saveImage(res.toString(), controller.image.path);
+                        .saveImage(res.toString(), controller.image!.path);
 
                     _titleController.dispose();
                     _contentController.dispose();
                     _addressController.dispose();
+
+                    if (!context.mounted) return;
+
+                    Navigator.pushNamed(context, "home");
                   },
                   child: Container(
                     alignment: Alignment.center,

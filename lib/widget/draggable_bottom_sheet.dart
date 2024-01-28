@@ -1,5 +1,6 @@
 import 'package:flirting/apis/place_api.dart';
 import 'package:flirting/models/place.dart';
+import 'package:flirting/utils/arguments.dart';
 import 'package:flutter/material.dart';
 
 class DraggableBottomSheet extends StatefulWidget {
@@ -17,15 +18,6 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
 
     setState(() {
       placeList = plaecListData;
-
-      // 디버깅용
-      placeList = [
-        PreviewPlace(placeId: 'a', title: 'a', contents: 'a', imageUrl: 'a'),
-        PreviewPlace(placeId: 'a', title: 'a', contents: 'a', imageUrl: 'a'),
-        PreviewPlace(placeId: 'a', title: 'a', contents: 'a', imageUrl: 'a'),
-        PreviewPlace(placeId: 'a', title: 'a', contents: 'a', imageUrl: 'a'),
-        PreviewPlace(placeId: 'a', title: 'a', contents: 'a', imageUrl: 'a')
-      ];
     });
   }
 
@@ -73,7 +65,7 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 5,
+                    itemCount: placeList.length,
                     itemBuilder: (context, index) {
                       return Row(
                         children: [
@@ -141,6 +133,15 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
               ),
             ),
           ),
+          InkWell(
+            child: const Text("장소 등록"),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "write",
+              );
+            },
+          ),
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 34),
@@ -158,7 +159,9 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
                           children: [
                             InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, "post");
+                                  Navigator.pushNamed(context, "post",
+                                      arguments: PostArgument(
+                                          placeList[index].placeId));
                                 },
                                 child: Container(
                                   width: 130,
@@ -170,6 +173,33 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
                                   child:
                                       Image.network(placeList[index].imageUrl),
                                 )),
+                            const SizedBox(
+                              width: 30,
+                            ),
+                            Column(children: [
+                              SizedBox(
+                                width: size.width * 0.3,
+                                child: Text(
+                                  placeList[index].title,
+                                  style: const TextStyle(
+                                    fontFamily: "Pretendard",
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              SizedBox(
+                                width: size.width * 0.3,
+                                child: Text(
+                                  placeList[index].contents,
+                                  style: const TextStyle(
+                                      fontFamily: "Pretendard",
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                              ),
+                            ])
                           ],
                         ),
                       ),
