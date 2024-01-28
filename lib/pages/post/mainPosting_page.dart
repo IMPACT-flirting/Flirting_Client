@@ -1,3 +1,4 @@
+import 'package:flirting/widget/main_select_date_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class MainPostingPage extends StatelessWidget {
@@ -328,7 +329,12 @@ class MainPostingPage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  print("일정에 추가하기");
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return const MainSelectDateBottomSheet();
+                    },
+                  );
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -359,7 +365,7 @@ class MainPostingPage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  print("리뷰 작성");
+                  Navigator.pushNamed(context, "write");
                 },
                 child: Container(
                   width: 162,

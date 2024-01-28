@@ -17,6 +17,6 @@ class PreviewPlace {
         placeId: json['id'],
         title: json['title'],
         contents: json['contents'],
-        imageUrl: json['imageUrl']);
+        imageUrl: json['img']);
   }
 }

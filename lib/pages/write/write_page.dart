@@ -1,11 +1,29 @@
+import 'dart:io';
+
+import 'package:flirting/apis/place_api.dart';
+import 'package:flirting/controller/image_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
-class WritePage extends StatelessWidget {
+class WritePage extends StatefulWidget {
   const WritePage({super.key});
 
   @override
+  createState() => _WritePageState();
+}
+
+class _WritePageState extends State<WritePage> {
+  final List<String> hashtags = [];
+  final List<String> hashtagList = ['#분위기있는', '#럭셔리', '#가족', '#자연', '#유적'];
+
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
+  final _addressController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
+    Get.put(ImageController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -21,7 +39,6 @@ class WritePage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print("뒤로가기");
                       Get.back();
                     },
                     child: const Icon(
@@ -47,17 +64,18 @@ class WritePage extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 26.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26.0),
               child: TextField(
-                style: TextStyle(
+                controller: _addressController,
+                style: const TextStyle(
                   fontSize: 15,
                   fontFamily: "Pretendard",
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.32,
                 ),
-                decoration: InputDecoration(
-                  labelText: '장소의 이름을 입력하세요',
+                decoration: const InputDecoration(
+                  labelText: '제목을 입력하세요',
                   labelStyle: TextStyle(
                     color: Color(0xFFA2A0A0),
                     fontSize: 15,
@@ -74,38 +92,52 @@ class WritePage extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            GestureDetector(
-              onTap: () {
-                print("이미지 선택");
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: 409,
-                height: 225,
-                decoration: const ShapeDecoration(
-                  color: Color(0xFFE6E6E6),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.add,
-                  size: 48,
-                  color: Color(0xffa2a0a0),
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 26.0),
+            GetBuilder<ImageController>(builder: (controller) {
+              return GestureDetector(
+                  onTap: () async {
+                    final ImagePicker picker = ImagePicker();
+                    final XFile? image =
+                        await picker.pickImage(source: ImageSource.gallery);
+
+                    controller.updateImage(image!);
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 409,
+                    height: 225,
+                    decoration: const ShapeDecoration(
+                      color: Color(0xFFE6E6E6),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+                      ),
+                    ),
+                    child: controller.image.isBlank!
+                        ? const Icon(
+                            Icons.add,
+                            size: 48,
+                            color: Color(0xffa2a0a0),
+                          )
+                        : SizedBox(
+                            width: 409,
+                            height: 225,
+                            child: Image.file(
+                              File(controller.image.path),
+                              fit: BoxFit.cover,
+                            )),
+                  ));
+            }),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26.0),
               child: TextField(
-                style: TextStyle(
+                controller: _contentController,
+                style: const TextStyle(
                   fontSize: 15,
                   fontFamily: "Pretendard",
                   fontWeight: FontWeight.w500,
                   letterSpacing: -0.32,
                 ),
                 maxLines: null,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: '내용을 입력하세요 ',
                   labelStyle: TextStyle(
                     color: Color(0xFFA2A0A0),
@@ -135,16 +167,17 @@ class WritePage extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 26.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26.0),
               child: TextField(
-                style: TextStyle(
+                controller: _addressController,
+                style: const TextStyle(
                   fontSize: 15,
                   fontFamily: "Pretendard",
                   fontWeight: FontWeight.w500,
                   letterSpacing: -0.32,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: '장소의 이름을 입력하세요',
                   labelStyle: TextStyle(
                     color: Color(0xFFA2A0A0),
@@ -195,146 +228,58 @@ class WritePage extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 7.0),
-                        child: Container(
-                          width: 78,
-                          height: 24,
-                          alignment: Alignment.center,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFD2D3D5),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                          ),
-                          child: const Text(
-                            '#분위기있는',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                        ),
+                  GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3, // 1개의 행에 항목을 3개씩
+                        mainAxisSpacing: 3,
+                        crossAxisSpacing: 5,
+                        childAspectRatio: 2,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 7.0),
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 61,
-                          height: 24,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF415EF8),
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                width: 3,
-                                strokeAlign: BorderSide.strokeAlignOutside,
-                                color: Color(0x4C415EF8),
+                      itemCount: hashtagList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                            onTap: () {
+                              setState(() {
+                                if (hashtags
+                                    .where((element) =>
+                                        element == hashtagList[index])
+                                    .isNotEmpty) {
+                                  hashtags.remove(hashtagList[index]);
+                                } else if (hashtags.length != 3) {
+                                  String hashtag = hashtagList[index];
+                                  hashtags.add(hashtag);
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 10,
+                              alignment: Alignment.center,
+                              decoration: ShapeDecoration(
+                                color: hashtags
+                                        .where((element) =>
+                                            element == hashtagList[index])
+                                        .isNotEmpty
+                                    ? const Color(0xFF415EF8)
+                                    : const Color(0xFFD2D3D5),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
                               ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text(
-                            '#럭셔리',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 7.0),
-                        child: Container(
-                          width: 51,
-                          alignment: Alignment.center,
-                          height: 24,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFD2D3D5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text(
-                            '#가족',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 7.0),
-                        child: Container(
-                          width: 51,
-                          alignment: Alignment.center,
-                          height: 24,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFD2D3D5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text(
-                            '#자연',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 7.0),
-                        child: Container(
-                          width: 51,
-                          alignment: Alignment.center,
-                          height: 24,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFD2D3D5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text(
-                            '#휴식',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.32,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                              child: Text(
+                                hashtagList[index].toString(),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.32,
+                                ),
+                              ),
+                            ));
+                      }),
                   const SizedBox(
                     height: 200,
                   ),
@@ -363,34 +308,46 @@ class WritePage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GestureDetector(
-                onTap: () {
-                  print("작성 완료하기");
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  width: 342,
-                  height: 56,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF415EF8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+              GetBuilder<ImageController>(builder: (controller) {
+                return GestureDetector(
+                  onTap: () async {
+                    String res = await PlaceApi().savePlace(
+                        _titleController.text,
+                        _contentController.text,
+                        _addressController.text,
+                        hashtags);
+                    await PlaceApi()
+                        .saveImage(res.toString(), controller.image.path);
+
+                    _titleController.dispose();
+                    _contentController.dispose();
+                    _addressController.dispose();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 342,
+                    height: 56,
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFF415EF8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const Text(
+                      '작성 완료하기',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 0.15,
+                        letterSpacing: -0.32,
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    '작성 완료하기',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w500,
-                      height: 0.15,
-                      letterSpacing: -0.32,
-                    ),
-                  ),
-                ),
-              ),
+                );
+              }),
             ],
           ),
         ),

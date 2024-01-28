@@ -65,10 +65,10 @@ class PlaceApi {
       dio.options.contentType = 'multipart/form-data';
       dio.options.maxRedirects.isFinite;
 
-      await dio.post(
-        "https://youtube.anys34.com/save",
-        data: {"id": placeId, "file": image},
-      );
+      await dio.post("https://youtube.anys34.com/picture",
+          data: FormData.fromMap(
+            {"id": placeId, "file": await MultipartFile.fromFile(image)},
+          ));
 
       return;
     } catch (e) {

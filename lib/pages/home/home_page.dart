@@ -1,4 +1,3 @@
-import 'package:flirting/apis/place_api.dart';
 import 'package:flirting/apis/user_api.dart';
 import 'package:flirting/controller/home_controller.dart';
 import 'package:flirting/models/place.dart';
@@ -26,17 +25,10 @@ class _HomePageState extends State<HomePage> {
     const storage = FlutterSecureStorage();
     String? userId = await storage.read(key: "userId");
     String data = await UserApi().getProfile(userId!);
-
-    List<PreviewPlace> plaecListData = await PlaceApi().getPlaceList();
+    debugPrint(data);
 
     setState(() {
       userName = data;
-      placeList = plaecListData;
-
-      // 디버깅용
-      placeList = [
-        PreviewPlace(placeId: 'a', title: 'a', contents: 'a', imageUrl: 'a')
-      ];
     });
   }
 

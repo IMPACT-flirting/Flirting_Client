@@ -158,7 +158,7 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
                           children: [
                             InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, "write");
+                                  Navigator.pushNamed(context, "post");
                                 },
                                 child: Container(
                                   width: 130,
