@@ -16,6 +16,7 @@ class SignUpPage extends GetView<AuthAnimation> {
   Widget build(BuildContext context) {
     Get.put(AuthAnimation());
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 26),
